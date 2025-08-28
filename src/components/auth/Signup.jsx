@@ -1,42 +1,62 @@
 import axios from "axios";
 import { useState } from "react";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import "./Login.css";
 
-const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
+const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
   const [formData, setFormData] = useState({
-    login: "",
+    username: "",
+    email: "",
     password: "",
+    confirmPassword: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
+    if (error) setError("");
+  };
+
+  const validateForm = () => {
+    if (formData.password !== formData.confirmPassword) {
+      setError("Les mots de passe ne correspondent pas");
+      return false;
+    }
+    if (formData.password.length < 6) {
+      setError("Le mot de passe doit faire au moins 6 caractères");
+      return false;
+    }
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    if (!validateForm) return;
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://lereacteur-vinted-api.herokuapp.com/user/login",
+        "https://lereacteur-vinted-api.herokuapp.com/user/signup",
         {
+          username: formData.username,
           email: formData.email,
           password: formData.password,
+          newsletter: true,
         }
       );
       const token = response.data.token;
-      //const user = response.data.user;
+      const user = response.data.account.username;
       Cookies.set("token", token);
-      setToken(token);
+      setToken({
+        "token": token,
+        "user": user
+      });
       setLoading(false);
-      navigate("/");
+      setVisible(false);
     } catch (error) {
       console.log(error.message);
       setError(error.message || "Erreur de connexion");
@@ -51,12 +71,26 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
       }}
     >
       <div className="auth-header">
-        <h2>Se connecter</h2>
-        <p>Connectez-vous pour vendre et acheter</p>
+        <h2>S'inscrire</h2>
+        <p>Rejoignez la communauté Vinted</p>
       </div>
 
       <form onSubmit={handleSubmit} className="auth-form">
         {error && <div className="error-message">{error}</div>}
+
+        <div className="form-group">
+          <label htmlFor="username">Nom d'utilisateur</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={formData.username}
+            onChange={handleChange}
+            placeholder="Votre nom d'utilisateur"
+            required
+            disabled={loading}
+          />
+        </div>
 
         <div className="form-group">
           <label htmlFor="email">Email</label>
@@ -80,7 +114,21 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            placeholder="Votre mot de passe"
+            placeholder="Au moins 6 caractères"
+            required
+            disabled={loading}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="confirmPassword">Confirmer le mot de passe</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirmez votre mot de passe"
             required
             disabled={loading}
           />
@@ -90,26 +138,25 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
           className={`auth-button ${loading ? "loading" : ""}`}
           disabled={loading}
         >
-          {loading ? "Connexion..." : "Se connecter"}
+          {loading ? "Inscription..." : "S'inscrire"}
         </button>
       </form>
 
       <div className="auth-footer">
         <p>
-          Pas encore de compte ?
-          <button className="link-button" onClick={onSwitchToSignup}>
-            S'inscrire
+          Déjà un compte ?
+          <button className="link-button" onClick={onSwitchToLogin}>
+            Se connecter
           </button>
         </p>
       </div>
       <button
         onClick={() => {
-          setVisible(false);
+            setVisible(false)
         }}
-      >
-        X
-      </button>
+      >X</button>
     </div>
   );
 };
-export default Login;
+
+export default Signup;

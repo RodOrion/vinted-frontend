@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import logoVinted from "../assets/vindet.svg";
 import Cookies from "js-cookie";
 
-const Header = ({token, setToken, setVisible}) => {
+const Header = ({token, setToken, setVisible, setIsLogin}) => {
 
   return (
     <header>
@@ -33,6 +33,7 @@ const Header = ({token, setToken, setVisible}) => {
                   <button
                     onClick={ () => {
                       setVisible(true)
+                      setIsLogin(false)
                     }}
                   >S'inscrire</button>
               </li>
@@ -40,6 +41,7 @@ const Header = ({token, setToken, setVisible}) => {
                   <button
                     onClick={ () => {
                       setVisible(true)
+                      setIsLogin(true)
                     }}
                   >Login</button>
               </li>              
@@ -48,6 +50,7 @@ const Header = ({token, setToken, setVisible}) => {
           </ul>
         </nav>
       </div>
+      { token && <p>Bonjour {token.user}</p>}
     </header>
   );
 };

@@ -1,10 +1,8 @@
-import { useState } from "react";
-import Login from "../pages/login/Login";
-import Signup from "../pages/login/Signup";
+import Login from "./Auth/Login";
+import Signup from "./auth/Signup";
 import { AnimatePresence, motion } from "framer-motion";
 
-const Modal = ({ setVisible, visible, setToken }) => {
-  const [isLogin, setIsLogin] = useState(false);
+const Modal = ({ setVisible, visible, setToken, setIsLogin, isLogin }) => {
     
   const clip_anim = {
     initial: {
