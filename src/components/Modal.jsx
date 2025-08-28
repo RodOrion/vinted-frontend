@@ -3,7 +3,7 @@ import Login from "../pages/login/Login";
 import Signup from "../pages/login/Signup";
 import { AnimatePresence, motion } from "framer-motion";
 
-const Modal = ({ setVisible, visible }) => {
+const Modal = ({ setVisible, visible, setToken }) => {
   const [isLogin, setIsLogin] = useState(false);
     
   const clip_anim = {
@@ -54,9 +54,10 @@ const Modal = ({ setVisible, visible }) => {
             <Login
               onSwitchToSignup={onSwitchToSignup}
               setVisible={setVisible}
+              setToken={setToken}
             />
           ) : (
-            <Signup onSwitchToLogin={onSwitchToLogin} setVisible={setVisible} />
+            <Signup onSwitchToLogin={onSwitchToLogin} setVisible={setVisible} setToken={setToken} />
           )}
         </motion.div>
       </AnimatePresence>

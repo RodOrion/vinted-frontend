@@ -17,14 +17,12 @@ function App() {
   return (
     <Router>
       {visible &&
-        <Modal setVisible={setVisible} visible={visible} />
+        <Modal setVisible={setVisible} visible={visible} setToken={setToken} />
       }
       <Header token={token} setToken={setToken} setVisible={setVisible} />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/offer/:id" element={<Offer />} />
-        <Route path="/login" element={<Login setToken={setToken} setVisible={setVisible} />} />
-        <Route path="/signup" element={<Signup setToken={setToken} setVisible={setVisible} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
