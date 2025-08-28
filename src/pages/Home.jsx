@@ -5,11 +5,16 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [originAPI, setOriginAPI] = useState(false);
 
   useEffect(() => {
+    const url = originAPI
+      ? "https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?sort=price-desc"
+      : "https://lereacteur-vinted-api.herokuapp.com/offers";
+
     const fetchData = async () => {
       try {
-        const response = await axios.get("https://lereacteur-vinted-api.herokuapp.com/offers");
+        const response = await axios.get(url);
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -18,35 +23,84 @@ const Home = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [originAPI]);
 
-  return isLoading ? <span>En cours de chargement... </span> : 
-  <main>
-    <section id="products" className="innerContainer flexContainer">
-        {
-            data.offers.map( (el) => {
-                return (
-                    <Link to={`/offer/${el._id}`}>
-                        <article>
-                            <p className="flexContainer contAvatar">
-                                { el.owner.account.avatar &&
-                                    <img className="avatar" src={el.owner.account.avatar.secure_url} alt="" /> 
-                                }
-                                <span>{el.owner.account.username}</span>
+  return isLoading ? (
+    <span>En cours de chargement... </span>
+  ) : (
+    <main>
+      <button
+        className="origin"
+        onClick={() => {
+          setOriginAPI((prev) => !prev); // !originAPI
+          setIsLoading(true);
+        }}
+      >
+        {originAPI ? "NO API" : "API"}
+      </button>
+      {originAPI ? (
+        <section id="products" className="flexContainer innerContainer">
+          {data.offers.map((offer) => {
+            return (
+              <Link key={offer._id} to={`/offer/${offer._id}`}>
+                <article>
+                  <figure>
+                    <img src={offer.product_images[0].secure_url} alt="" />
+                  </figure>
+                  <p>{offer.product_price} €</p>
+                  {console.log(offer.product_details[0])}
+                  <p>État : {offer.product_details[0].ÉTAT}</p>
+                  <p>Taille : {offer.product_details[3].TAILLE}</p>
+                  <p>Marque : {offer.product_details[2].MARQUE}</p>
+                  {/* <p>{offer.product_description}</p> */}
+                  {/* {offer.product_details.map((detail, index) => {
+                    return (
+                      <div key={index}>
+                        {Object.entries(detail).map(([key, value]) => {
+                          return (
+                            <p key={key}>
+                              <span className="property">{key} : </span>
+                              <span className="value">{value}</span>
                             </p>
-                            <figure>
-                                <img src={el.product_image.secure_url} alt="" />
-                            </figure>
-                            <p>{el.product_price} €</p>
-                            <p>{el.product_details[1].TAILLE}</p>
-                            <p>{el.product_details[0].MARQUE}</p>
-                            
-                        </article>
-                    </Link>
-                )
-            })
-        }
-    </section>
-  </main>;
+                          );
+                        })}
+                      </div>
+                    );
+                  })} */}
+                </article>
+              </Link>
+            );
+          })}
+        </section>
+      ) : (
+        <section id="products" className="innerContainer flexContainer">
+          {data.offers.map((el) => {
+            return (
+              <Link key={el._id} to={`/offer/${el._id}`}>
+                <article>
+                  <p className="flexContainer contAvatar">
+                    {el.owner.account.avatar && (
+                      <img
+                        className="avatar"
+                        src={el.owner.account.avatar.secure_url}
+                        alt=""
+                      />
+                    )}
+                    <span>{el.owner.account.username}</span>
+                  </p>
+                  <figure>
+                    <img src={el.product_image.secure_url} alt="" />
+                  </figure>
+                  <p>{el.product_price} €</p>
+                  <p>{el.product_details[1].TAILLE}</p>
+                  <p>{el.product_details[0].MARQUE}</p>
+                </article>
+              </Link>
+            );
+          })}
+        </section>
+      )}
+    </main>
+  );
 };
 export default Home;

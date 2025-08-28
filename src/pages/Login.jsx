@@ -3,7 +3,7 @@ import { authService } from "../services/authService";
 import AuthModal from "../components/Auth/AuthModal";
 
 const Login = () => {
-    const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

@@ -1,12 +1,61 @@
-#root {
+@import url('https://fonts.googleapis.com/css2?family=Cossette+Texte:wght@400;700&display=swap');
+body {
+  font-family: "Cossette Texte", sans-serif;
 }
 header {
   background-color: #fdfdfd;
   padding: 2rem;
 }
-.logo {
-  max-height: 80px;
+header > div.innerContainer {
+  align-items: center;
+  justify-content: space-between;
 }
+.logo {
+  max-height: 120px;
+}
+/** classes **/
+button {
+    margin-top: auto;
+    background-color: #09b1ba;
+    border: 1px solid #09b1ba;
+    color: #fff;
+    padding: 1.8rem;
+    border-radius: 10px;
+    font-size: 1.6rem;
+    cursor: pointer;
+}
+button:hover {
+  background-color: transparent;
+  color: #09b1ba;
+}
+/*** header ***/
+header form {
+    /* flex: 1; */
+    flex-basis: 400px;
+}
+input[type="search"] {
+    width: 100%;
+    padding: 2rem;
+    background-color: transparent;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+}
+header .innerContainer.flexContainer > * {
+    flex: 1;
+}
+/** nav **/
+header nav ul.flexContainer {
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    gap: 2rem;
+    justify-content: flex-end;
+}
+
+header nav li button {
+    padding: 1.2rem 2rem;
+}
+/**/
 main {
   background-color: #eee;
 }
@@ -17,6 +66,11 @@ section#products > a {
     flex: 1 1 calc(25% - 20px);
     text-decoration: none;
 }
+section#products img.avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
 section#products article img {
     object-fit: cover;
     width: 100%;
@@ -26,20 +80,64 @@ section#products .contAvatar {
   align-items: center;
   gap:20px;
 }
-section#products img.avatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-}
 section#products figure ~ p {
   margin: .2rem 0;
 }
 /*** PAGE OFFER **/
-#product article.flexContainer {
-    flex: 1;
-    justify-content: space-between;
+#product article {
+    display: flex;
+    justify-content: center;
+    gap:6rem;
+    width: 100%;
 }
-#product article.flexContainer .content {
+#product article > * {
+  flex: 1;
+  margin: 4rem 0;
+}
+#product .swiper {
+    flex-basis: 50%;
+    max-height: 80vh;
+}
+#product .swiper img {
+      object-fit: cover;
+    height: 100%;
+    width: 100%;
+}
+#product article .content {
     background-color: #fefefe;
-    padding: 2rem 3rem;
+    padding: 2rem 6rem;
+    display: flex;
+    flex-direction: column;
+    margin: 8rem 0;
+    flex-basis: 50%;
 }
+.content section {
+    padding: 3rem;
+    border-bottom: 1px solid #ccc;
+}
+.content section:last-of-type {
+  border:none;
+}
+#product article .content .price {
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 3rem;
+}
+#product article .content span.property {
+    padding-right: 2rem;
+    font-weight: 600;
+}
+
+#product article .content section div > p {
+    display: flex;
+}
+
+#product article .content section div > p > span {
+    flex: 1;
+}
+#product .content .name {
+    font-weight: 600;
+    margin-bottom: 3rem;
+}
+#product .avatarCont { align-items: center; gap:3rem;}
+#product .avatar { width:70px; height: 70px;}

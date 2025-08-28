@@ -1,26 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    slidesToSlide: 3, // optional, default to 1.
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    slidesToSlide: 2, // optional, default to 1.
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-    slidesToSlide: 1, // optional, default to 1.
-  },
-};
+// import Swiper core and required modules
+import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/scrollbar';
 
 const Offer = () => {
   const { id } = useParams();
@@ -52,47 +41,66 @@ const Offer = () => {
     <main>
       <section id="product" className="innerContainer flexContainer">
         {data && (
-          <article className="flexContainer">
+          <article className="">
             {data.product_pictures.length > 1 ? (
-              <Carousel
-                showDots={true}
-                responsive={responsive}
-              >
-                {data.product_pictures.map((img, index) => {
-                  return (
-                    <figure key={img.asset_id+index}>
-                      <img src={img.secure_url} alt="" />
-                      <p>test</p>
-                  </figure>
-                  );
-                })}
-              </Carousel>
+              <>
+                <Swiper
+                  // install Swiper modules
+                  modules={[Navigation, Pagination, Scrollbar, A11y]}
+                  spaceBetween={10}
+                  slidesPerView={1}
+                  navigation
+                  pagination={{ clickable: true }}
+                  scrollbar={{ draggable: true }}
+                  onSwiper={(swiper) => console.log(swiper)}
+                  onSlideChange={() => console.log('slide change')}
+                >
+                    {data.product_pictures.map((img, index) => {
+                      return (
+                        <SwiperSlide>
+                            <img key={img.asset_id + index} src={img.secure_url} alt="" />
+                        </SwiperSlide>
+                      );
+                    })}
+                </Swiper>
+              </>
             ) : (
               <figure>
                 <img src={data.product_pictures[0].secure_url} alt="" />
-                <p>test</p>
               </figure>
             )}
 
             <div className="content">
-              <div className="flexContainer">
-                <span>Prix :</span>
-                <span>{data.product_price.toFixed(2)} €</span>
-              </div>
-              {data.product_details.map((el, index) => {
-                return (
-                  <div key={index}>
-                    {Object.entries(el).map(([key, value]) => {
-                      return (
-                        <p key={key}>
-                          <span className="property">{key}:</span>
-                          <span className="value">{value}</span>
-                        </p>
-                      );
-                    })}
-                  </div>
-                );
-              })}
+              <section>
+                <div className="price">
+                  {data.product_price.toFixed(2)} €
+                </div>
+                {data.product_details.map((el, index) => {
+                  return (
+                    <div key={index}>
+                      {Object.entries(el).map(([key, value]) => {
+                        return (
+                          <p key={key}>
+                            <span className="property">{key} : </span>
+                            <span className="value">{value}</span>
+                          </p>
+                        );
+                      })}
+                    </div>
+                  );
+                })}                
+              </section>
+              <section>
+                <div className="name">{data.product_name}</div>
+                <div className="desc">{data.product_description}</div>
+              </section>
+              <section>
+                <div className="avatarCont flexContainer">
+                  { data.owner.account.avatar && <img className="avatar" src={data.owner.account.avatar.secure_url} alt="" /> }       
+                  <span>{ data.owner.account.username }</span>
+                </div>
+              </section>
+              <button>ACHETER</button>
             </div>
           </article>
         )}
