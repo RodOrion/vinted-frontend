@@ -9,14 +9,16 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
     email: "",
     password: "",
     confirmPassword: "",
+    newsletter: ""
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
+    const value = e.target.name === "newsletter" ? e.target.checked : e.target.value
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
     if (error) setError("");
   };
@@ -46,9 +48,10 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
           username: formData.username,
           email: formData.email,
           password: formData.password,
-          newsletter: true,
+          newsletter: formData.newsletter,
         }
       );
+      console.log(formData);
       const getToken = response.data.token;
       const user = response.data.account.username;
       Cookies.set("token", getToken);
@@ -59,8 +62,8 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
       setLoading(false);
       setVisible(false);
     } catch (error) {
-      console.log(error.message);
-      setError(error.message || "Erreur de connexion");
+      console.log(error);
+      setError(error.response.data.message || "Erreur de connexion");
     }
   };
 
@@ -128,6 +131,10 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
             required
             disabled={loading}
           />
+        </div>
+
+        <div className="form-news-group">
+          <input type="checkbox" name="newsletter" id="newsletter" onChange={handleChange} /> Inscription à la newsletter
         </div>
 
         <button

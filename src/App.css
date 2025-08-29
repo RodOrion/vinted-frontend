@@ -8,7 +8,7 @@ header {
 }
 header > div.innerContainer {
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 .logo {
   max-height: 120px;
@@ -32,6 +32,7 @@ button:hover {
 header form {
     /* flex: 1; */
     flex-basis: 400px;
+    margin: auto;
 }
 input[type="search"] {
     width: 100%;
