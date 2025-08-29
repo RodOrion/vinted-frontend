@@ -9,7 +9,7 @@ import NotFound from "./pages/NotFound";
 import Modal from "./components/Modal";
 
 function App() {
-  const [token, setToken] = useState({})
+  const [token, setToken] = useState(null)
   const [visible, setVisible] = useState(false)
   const [isLogin, setIsLogin] = useState(false);
 
