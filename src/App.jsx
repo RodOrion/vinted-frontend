@@ -7,15 +7,16 @@ import Footer from "./components/Footer";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import NotFound from "./pages/NotFound";
 import Modal from "./components/Modal";
+import Cookies from "js-cookie";
 
 function App() {
-  const [token, setToken] = useState(null)
-  const [visible, setVisible] = useState(false)
-  const [isLogin, setIsLogin] = useState(false);
+  const [token, setToken] = useState(Cookies.get("token") || null)
+  const [visible, setVisible] = useState(false) // visibilité modale
+  const [isLogin, setIsLogin] = useState(false); // card login or register
 
   return (
     <Router>
-      <Modal setVisible={setVisible} visible={visible} setToken={setToken} token={token} setIsLogin={setIsLogin} isLogin={isLogin} />
+      <Modal setVisible={setVisible} visible={visible} setToken={setToken} setIsLogin={setIsLogin} isLogin={isLogin} />
       <Header token={token} setToken={setToken} setVisible={setVisible} setIsLogin={setIsLogin} />
       <Routes>
         <Route path="/" element={<Home />} />

@@ -48,7 +48,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
           username: formData.username,
           email: formData.email,
           password: formData.password,
-          newsletter: formData.newsletter,
+          newsletter: true,
         }
       );
       console.log(formData);

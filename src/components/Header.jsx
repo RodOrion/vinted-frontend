@@ -3,7 +3,7 @@ import logoVinted from "../assets/vindet.svg";
 import Cookies from "js-cookie";
 
 const Header = ({token, setToken, setVisible, setIsLogin}) => {
-  console.log(token)
+
   return (
     <header>
       <div className="innerContainer flexContainer">
