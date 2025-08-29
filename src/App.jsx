@@ -9,15 +9,13 @@ import NotFound from "./pages/NotFound";
 import Modal from "./components/Modal";
 
 function App() {
-  const [token, setToken] = useState(null)
+  const [token, setToken] = useState({})
   const [visible, setVisible] = useState(false)
   const [isLogin, setIsLogin] = useState(false);
 
   return (
     <Router>
-      {visible &&
-        <Modal setVisible={setVisible} visible={visible} setToken={setToken} setIsLogin={setIsLogin} isLogin={isLogin} />
-      }
+      <Modal setVisible={setVisible} visible={visible} setToken={setToken} token={token} setIsLogin={setIsLogin} isLogin={isLogin} />
       <Header token={token} setToken={setToken} setVisible={setVisible} setIsLogin={setIsLogin} />
       <Routes>
         <Route path="/" element={<Home />} />

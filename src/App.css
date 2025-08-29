@@ -61,9 +61,10 @@ main {
 }
 section#products {
     gap: 20px;
+    padding: 1rem 1.5rem;
 }
 section#products > a {
-    flex: 1 1 calc(25% - 20px);
+    flex: 1 1 calc(50% - 20px);
     text-decoration: none;
 }
 section#products img.avatar {
@@ -83,16 +84,28 @@ section#products .contAvatar {
 section#products figure ~ p {
   margin: .2rem 0;
 }
+@media (min-width:1024px) {
+  section#products > a {
+      flex: 1 1 calc(33% - 20px);
+      text-decoration: none;
+  }
+}
+@media (min-width:1280px) {
+  section#products > a {
+      flex: 1 1 calc(25% - 20px);
+      text-decoration: none;
+  }
+}
 /*** PAGE OFFER **/
 #product article {
     display: flex;
-    justify-content: center;
-    gap:6rem;
+    gap:1rem;
     width: 100%;
+    flex-direction: column;
 }
 #product article > * {
-  flex: 1 1 50%;
-  margin: 4rem 0;
+  flex: 1;
+  margin: 2rem 0;
 }
 #product .swiper {
     flex-basis: 50%;
@@ -114,8 +127,7 @@ section#products figure ~ p {
     padding: 2rem 6rem;
     display: flex;
     flex-direction: column;
-    margin: 8rem 0;
-    flex-basis: 50%;
+    margin: 0 2rem 2rem;
 }
 .content section {
     padding: 3rem;
@@ -147,3 +159,19 @@ section#products figure ~ p {
 }
 #product .avatarCont { align-items: center; gap:3rem;}
 #product .avatar { width:70px; height: 70px;}
+@media (min-width:1024px) {
+  #product article {
+      justify-content: center;
+      gap:6rem;
+      flex-direction: row;
+      padding: 0 2rem;
+  }
+  #product article > * {
+    flex: 1 1 50%;
+    margin: 4rem 0;
+  }
+  #product article .content {
+      margin: 8rem 0;
+      flex-basis: 50%;
+  }
+}

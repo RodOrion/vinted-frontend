@@ -1,16 +1,15 @@
-import Login from "./Auth/Login";
+import Login from "./auth/Login";
 import Signup from "./auth/Signup";
 import { AnimatePresence, motion } from "framer-motion";
 
-const Modal = ({ setVisible, visible, setToken, setIsLogin, isLogin }) => {
-    
+const Modal = ({ setVisible, visible, setToken, token, setIsLogin, isLogin }) => {
   const clip_anim = {
     initial: {
-      clipPath: "circle(0 at 0% 50%)",
+      clipPath: "circle(0 at 110% 10%)",
       WebkitClipPath: "circle(0 at 0% 50%)",
     },
     enter: {
-      clipPath: "circle(140% at 0 14%)",
+      clipPath: "circle(140% at 0 50%)",
       WebkitClipPath: "circle(140% at 0 10%)",
       transition: {
         duration: 1,
@@ -18,8 +17,8 @@ const Modal = ({ setVisible, visible, setToken, setIsLogin, isLogin }) => {
       },
     },
     exit: {
-      clipPath: "circle(0 at 0% 50%)",
-      WebkitClipPath: "circle(0 at 0% 50%)",
+      clipPath: "circle(0 at 0% 0%)",
+      WebkitClipPath: "circle(0 at 0% 0%)",
       transition: {
         duration: 0.8,
         ease: "easeInOut",
@@ -35,8 +34,8 @@ const Modal = ({ setVisible, visible, setToken, setIsLogin, isLogin }) => {
   };
 
   return (
-    visible && (
-      <AnimatePresence mode="wait">
+    <AnimatePresence mode="wait">
+      {visible && (
         <motion.div
           key="modal"
           variants={clip_anim}
@@ -48,18 +47,38 @@ const Modal = ({ setVisible, visible, setToken, setIsLogin, isLogin }) => {
             setVisible(false);
           }}
         >
-          {isLogin ? (
-            <Login
-              onSwitchToSignup={onSwitchToSignup}
-              setVisible={setVisible}
-              setToken={setToken}
-            />
-          ) : (
-            <Signup onSwitchToLogin={onSwitchToLogin} setVisible={setVisible} setToken={setToken} />
-          )}
+          <div
+            className="auth-container-card"
+            onClick={(event) => {
+              event.stopPropagation();
+            }}
+          >
+            {isLogin ? (
+              <Login
+                onSwitchToSignup={onSwitchToSignup}
+                setVisible={setVisible}
+                setToken={setToken}
+              />
+            ) : (
+              <Signup
+                onSwitchToLogin={onSwitchToLogin}
+                setVisible={setVisible}
+                setToken={setToken}
+                token={token}
+              />
+            )}
+            <motion.button
+              onClick={() => {
+                setVisible(false);
+              }}
+              whileTap={{ y: 1 }}
+            >
+              X
+            </motion.button>
+          </div>
         </motion.div>
-      </AnimatePresence>
-    )
+      )}
+    </AnimatePresence>
   );
 };
 

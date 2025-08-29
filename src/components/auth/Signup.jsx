@@ -40,19 +40,20 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://lereacteur-vinted-api.herokuapp.com/user/signup",
+        "https://site--backend-vinted--zcmn9mpggpg8.code.run/user/signup",
         {
+          //avatar: false,
           username: formData.username,
           email: formData.email,
           password: formData.password,
           newsletter: true,
         }
       );
-      const token = response.data.token;
+      const getToken = response.data.token;
       const user = response.data.account.username;
-      Cookies.set("token", token);
+      Cookies.set("token", getToken);
       setToken({
-        "token": token,
+        "token": getToken,
         "user": user
       });
       setLoading(false);
@@ -64,12 +65,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
   };
 
   return (
-    <div
-      className="auth-card"
-      onClick={(event) => {
-        event.stopPropagation();
-      }}
-    >
+    <div className="auth-card">
       <div className="auth-header">
         <h2>S'inscrire</h2>
         <p>Rejoignez la communauté Vinted</p>
@@ -150,11 +146,6 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
           </button>
         </p>
       </div>
-      <button
-        onClick={() => {
-            setVisible(false)
-        }}
-      >X</button>
     </div>
   );
 };

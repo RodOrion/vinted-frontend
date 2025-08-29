@@ -23,14 +23,13 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
     setLoading(true);
     try {
       const response = await axios.post(
-        "https://lereacteur-vinted-api.herokuapp.com/user/login",
+        "https://site--backend-vinted--zcmn9mpggpg8.code.run/user/login",
         {
           email: formData.email,
           password: formData.password,
         }
       );
-      console.log(response);
-      
+      //console.log(response);
       const token = response.data.token;
       const user = response.data.account.username;
       Cookies.set("token", token);
@@ -47,12 +46,7 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
   };
 
   return (
-    <div
-      className="auth-card"
-      onClick={(event) => {
-        event.stopPropagation();
-      }}
-    >
+    <div className="auth-card">
       <div className="auth-header">
         <h2>Se connecter</h2>
         <p>Connectez-vous pour vendre et acheter</p>
@@ -105,13 +99,6 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
           </button>
         </p>
       </div>
-      <button
-        onClick={() => {
-          setVisible(false);
-        }}
-      >
-        X
-      </button>
     </div>
   );
 };
