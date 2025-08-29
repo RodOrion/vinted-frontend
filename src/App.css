@@ -41,9 +41,6 @@ input[type="search"] {
     border: 2px solid #ccc;
     border-radius: 8px;
 }
-header .innerContainer.flexContainer > * {
-    flex: 1;
-}
 /** nav **/
 header nav ul.flexContainer {
     margin: 0;
