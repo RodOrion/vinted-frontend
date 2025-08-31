@@ -20,7 +20,7 @@ const Offer = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://lereacteur-vinted-api.herokuapp.com/offer/${id}`
+          `https://site--backend-vinted--zcmn9mpggpg8.code.run/offers/${id}`
         );
         //const result = response.data.offers.find((el) => el._id === id);
         setData(response.data);
@@ -42,7 +42,7 @@ const Offer = () => {
       <section id="product" className="innerContainer flexContainer">
         {data && (
           <article className="">
-            {data.product_pictures.length > 1 ? (
+            {data.product_images.length > 1 ? (
               <>
                 <Swiper
                   // install Swiper modules
@@ -66,7 +66,7 @@ const Offer = () => {
               </>
             ) : (
               <figure>
-                <img src={data.product_pictures[0].secure_url} alt="" />
+                <img src={data.product_images[0].secure_url} alt="" />
               </figure>
             )}
 

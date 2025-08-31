@@ -2,21 +2,16 @@ import axios from "axios";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import "./Login.css";
+import { Navigate } from "react-router-dom";
+import { handleInputChange } from "../../utils/formUtils";
 
-const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
+const Login = ({ setToken, setUser, onSwitchToSignup, setVisible }) => {
   const [formData, setFormData] = useState({
     login: "",
     password: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,16 +24,19 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
           password: formData.password,
         }
       );
-      //console.log(response);
+      console.log(response);
       const token = response.data.token;
-      const user = response.data.account.username;
+      const username = response.data.account.username;
+      const user_id = response.data.account._id;
       Cookies.set("token", token);
-      setToken({
-        "token": token,
-        "user": user
-      });
+      setToken(token);
+      setUser({
+        username,
+        user_id
+      })
       setLoading(false);
       setVisible(false);
+      Navigate(`/dashboard/${user_id}`)
     } catch (error) {
       console.log(error.message);
       setError(error.message || "Erreur de connexion");
@@ -62,7 +60,7 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
             id="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={(element)=>{handleInputChange(setFormData, element)}}
             placeholder="exemple@email.com"
             required
             disabled={loading}
@@ -76,7 +74,7 @@ const Login = ({ setToken, onSwitchToSignup, setVisible }) => {
             id="password"
             name="password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={(element)=>{handleInputChange(setFormData, element)}}
             placeholder="Votre mot de passe"
             required
             disabled={loading}

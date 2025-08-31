@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import "./Login.css";
+import { handleInputChange, validateForm } from "../../utils/formUtils";
 
 const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
   const [formData, setFormData] = useState({
@@ -14,31 +15,10 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleChange = (e) => {
-    const value = e.target.name === "newsletter" ? e.target.checked : e.target.value
-    setFormData({
-      ...formData,
-      [e.target.name]: value,
-    });
-    if (error) setError("");
-  };
-
-  const validateForm = () => {
-    if (formData.password !== formData.confirmPassword) {
-      setError("Les mots de passe ne correspondent pas");
-      return false;
-    }
-    if (formData.password.length < 6) {
-      setError("Le mot de passe doit faire au moins 6 caractères");
-      return false;
-    }
-    return true;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    if (!validateForm) return;
+    if (!validateForm(formData,setError)) return;
     setLoading(true);
     try {
       const response = await axios.post(
@@ -84,7 +64,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
             id="username"
             name="username"
             value={formData.username}
-            onChange={handleChange}
+            onChange={(element) => {handleInputChange(setFormData, element)}}
             placeholder="Votre nom d'utilisateur"
             required
             disabled={loading}
@@ -98,7 +78,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
             id="email"
             name="email"
             value={formData.email}
-            onChange={handleChange}
+            onChange={(element) => {handleInputChange(setFormData, element)}}
             placeholder="exemple@email.com"
             required
             disabled={loading}
@@ -112,7 +92,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
             id="password"
             name="password"
             value={formData.password}
-            onChange={handleChange}
+            onChange={(element) => {handleInputChange(setFormData, element)}}
             placeholder="Au moins 6 caractères"
             required
             disabled={loading}
@@ -126,7 +106,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
             id="confirmPassword"
             name="confirmPassword"
             value={formData.confirmPassword}
-            onChange={handleChange}
+            onChange={(element) => {handleInputChange(setFormData, element)}}
             placeholder="Confirmez votre mot de passe"
             required
             disabled={loading}
@@ -134,7 +114,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
         </div>
 
         <div className="form-news-group">
-          <input type="checkbox" name="newsletter" id="newsletter" onChange={handleChange} /> Inscription à la newsletter
+          <input type="checkbox" name="newsletter" id="newsletter" onChange={(element) => {handleInputChange(setFormData, element)}} /> Inscription à la newsletter
         </div>
 
         <button

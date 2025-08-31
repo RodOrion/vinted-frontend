@@ -1,20 +1,26 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+/** range **/
+import RangeSlider from 'react-range-slider-input';
+import 'react-range-slider-input/dist/style.css';
+/** utils **/
+import { buildQuery } from "../utils/SearchOffersUtils";
 
-const Home = () => {
+const Home = ({ setFormDataSearch, formDataSearch }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [originAPI, setOriginAPI] = useState(false);
+  const [originAPI, setOriginAPI] = useState(true);
+  const [valueRange, setValueRange] = useState([]);
 
   useEffect(() => {
-    const url = originAPI
-      ? "https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?sort=price-desc"
-      : "https://lereacteur-vinted-api.herokuapp.com/offers";
-
+    // const url = originAPI
+    //   ? "https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?sort=price-desc"
+    //   : "https://lereacteur-vinted-api.herokuapp.com/offers";
+    
     const fetchData = async () => {
       try {
-        const response = await axios.get(url);
+        const response = await axios.get(`https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?${buildQuery(formDataSearch)}`);
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -23,7 +29,25 @@ const Home = () => {
       }
     };
     fetchData();
-  }, [originAPI]);
+  }, [formDataSearch]);
+
+  const updateFormData = (updates) => {
+    setFormDataSearch((prevState) => ({
+      ...prevState,
+      ...updates,
+    }));
+  };
+
+  useEffect(() => {
+    const [val1, val2] = valueRange;
+    const min = Math.min(val1, val2);
+    const max = Math.max(val1, val2);
+
+    updateFormData({
+      priceMax: max,
+      priceMin: min,
+    });
+  }, [valueRange]);
 
   return isLoading ? (
     <span>En cours de chargement... </span>
@@ -38,6 +62,45 @@ const Home = () => {
       >
         {originAPI ? "NO API" : "API"}
       </button>
+      <div className="filtres">
+        <div className="innerContainer">
+          <h2>FIltres</h2>
+          <form className="flexContainer">
+            <label htmlFor="marques">Marques
+              <select name="marques" id="marques">
+                <option value="nike">Nike</option>
+                <option value="nike">Oakley</option>
+                <option value="nike">Zara</option>
+              </select>
+            </label>
+            <label htmlFor="taille">Tailles
+              <select name="taille" id="taille">
+                <option value="s">S</option>
+                <option value="m">M</option>
+                <option value="l">L</option>
+                <option value="xl">XL</option>
+              </select>
+            </label>
+            <label htmlFor="etat">État
+              <select name="etat" id="etat">
+                <option value="neuf_avec">Neuf avec étiquette</option>
+                <option value="neuf_sans">Neuf san étiquette</option>
+                <option value="tbe">Très bon état</option>
+                <option value="be">Bon état</option>
+                <option value="s">Satisfaisant</option>
+              </select>
+            </label>
+            <div className="contRange">
+              <RangeSlider
+                value={valueRange.length>0 ? valueRange : [0,90]}
+                min={0}
+                max={500}
+                onInput={setValueRange}
+              />
+            </div>
+          </form>
+        </div>
+      </div>
       {originAPI ? (
         <section id="products" className="flexContainer innerContainer">
           {data.offers.map((offer) => {
@@ -48,7 +111,7 @@ const Home = () => {
                     <img src={offer.product_images[0].secure_url} alt="" />
                   </figure>
                   <p>{offer.product_price} €</p>
-                  {console.log(offer.product_details[0])}
+
                   <p>État : {offer.product_details[0].ÉTAT}</p>
                   <p>Taille : {offer.product_details[3].TAILLE}</p>
                   <p>Marque : {offer.product_details[2].MARQUE}</p>

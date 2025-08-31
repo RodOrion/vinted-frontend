@@ -2,16 +2,17 @@
 body {
   font-family: "Cossette Texte", sans-serif;
 }
-header {
-  background-color: #fdfdfd;
-  padding: 2rem;
-}
-header > div.innerContainer {
-  align-items: center;
-  justify-content: center;
-}
-.logo {
-  max-height: 120px;
+.hero-section {
+    position: sticky;
+    top: 0;
+    background-color: #fdfdfd;
+    padding: 1rem;
+} 
+.hero-section > .flexContainer {
+    justify-content: center;
+} 
+.hero-section .logo {
+  max-height: 60px;
 }
 /** classes **/
 button {
@@ -29,12 +30,12 @@ button:hover {
   color: #09b1ba;
 }
 /*** header ***/
-header form {
+.hero-section form {
     /* flex: 1; */
-    flex-basis: 400px;
+    flex-basis: 600px;
     margin: auto;
 }
-input[type="search"] {
+.hero-section input[type="search"] {
     width: 100%;
     padding: 2rem;
     background-color: transparent;
@@ -42,21 +43,75 @@ input[type="search"] {
     border-radius: 8px;
 }
 /** nav **/
-header nav ul.flexContainer {
-    margin: 0;
+.hero-section nav ul.flexContainer {
+    margin: 1rem 0 0;
     padding: 0;
     align-items: center;
     gap: 2rem;
     justify-content: flex-end;
 }
-
-header nav li button {
+.hero-section nav li button {
     padding: 1.2rem 2rem;
+}
+/** banner **/
+header .banner {
+  background: url("assets/banner-wide.jpg") no-repeat;
+  background-position: center bottom;
+  background-size: cover;
+  min-height: 60vh;
 }
 /**/
 main {
   background-color: #eee;
 }
+/*** Filtres ***/
+.filtres {
+    background-color: #fff;
+    padding: 1.5rem 0;
+}
+.filtres .innerContainer {padding: 0 2rem; margin-top: 0;}
+.filtres form {
+    gap: 8rem;
+    margin: 0 auto;
+}
+select,
+::picker(select) {
+  appearance: base-select;
+}
+/* select::picker-icon {
+  color: blue;
+  margin-right: 0.1rem;
+} */
+.filtres form .contRange {
+  flex: 2 1 400px;
+  margin-left: auto;
+  max-width: 600px;
+}
+/** range **/
+.filtres  .contRange {
+  margin-top: 2.2rem;
+  padding: 1rem 0;
+}
+.filtres  .range-slider__thumb::before {
+    content: attr(aria-valuenow);
+    position: relative;
+    bottom: 30px;
+    text-align: center;
+    display: block;
+    background-color: #09b1ba;
+    color: #fff;
+    width: 36px;
+    border-radius: 5px;
+    margin-left: -3px;
+}
+.filtres  .range-slider .range-slider__range {
+    background: #09b1ba;
+}
+
+.filtres  .range-slider .range-slider__thumb {
+    background: #09b1ba;
+}
+/***/
 section#products {
     gap: 20px;
     padding: 1rem 1.5rem;
