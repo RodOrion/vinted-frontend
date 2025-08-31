@@ -2,8 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 /** range **/
-import RangeSlider from 'react-range-slider-input';
-import 'react-range-slider-input/dist/style.css';
+import RangeSlider from "react-range-slider-input";
+import "react-range-slider-input/dist/style.css";
 /** utils **/
 import { buildQuery } from "../utils/SearchOffersUtils";
 
@@ -17,10 +17,14 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
     // const url = originAPI
     //   ? "https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?sort=price-desc"
     //   : "https://lereacteur-vinted-api.herokuapp.com/offers";
-    
+
     const fetchData = async () => {
       try {
-        const response = await axios.get(`https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?${buildQuery(formDataSearch)}`);
+        const response = await axios.get(
+          `https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?${buildQuery(
+            formDataSearch
+          )}`
+        );
         setData(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -31,14 +35,13 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
     fetchData();
   }, [formDataSearch]);
 
-  const updateFormData = (updates) => {
-    setFormDataSearch((prevState) => ({
-      ...prevState,
-      ...updates,
-    }));
-  };
-
   useEffect(() => {
+    const updateFormData = (updates) => {
+      setFormDataSearch((prevState) => ({
+        ...prevState,
+        ...updates,
+      }));
+    };
     const [val1, val2] = valueRange;
     const min = Math.min(val1, val2);
     const max = Math.max(val1, val2);
@@ -47,7 +50,7 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
       priceMax: max,
       priceMin: min,
     });
-  }, [valueRange]);
+  }, [valueRange, setFormDataSearch]);
 
   return isLoading ? (
     <span>En cours de chargement... </span>
@@ -66,14 +69,16 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
         <div className="innerContainer">
           <h2>FIltres</h2>
           <form className="flexContainer">
-            <label htmlFor="marques">Marques
+            <label htmlFor="marques">
+              Marques
               <select name="marques" id="marques">
                 <option value="nike">Nike</option>
                 <option value="nike">Oakley</option>
                 <option value="nike">Zara</option>
               </select>
             </label>
-            <label htmlFor="taille">Tailles
+            <label htmlFor="taille">
+              Tailles
               <select name="taille" id="taille">
                 <option value="s">S</option>
                 <option value="m">M</option>
@@ -81,7 +86,8 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
                 <option value="xl">XL</option>
               </select>
             </label>
-            <label htmlFor="etat">État
+            <label htmlFor="etat">
+              État
               <select name="etat" id="etat">
                 <option value="neuf_avec">Neuf avec étiquette</option>
                 <option value="neuf_sans">Neuf san étiquette</option>
@@ -92,7 +98,7 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
             </label>
             <div className="contRange">
               <RangeSlider
-                value={valueRange.length>0 ? valueRange : [0,90]}
+                value={valueRange.length > 0 ? valueRange : [0, 90]}
                 min={0}
                 max={500}
                 onInput={setValueRange}
