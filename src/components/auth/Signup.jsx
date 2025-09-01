@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import Cookies from "js-cookie";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 import { handleInputChange, validateForm } from "../../utils/formUtils";
 
 const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
@@ -14,6 +15,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +36,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
       console.log(formData);
       const getToken = response.data.token;
       const user = response.data.account.username;
+      const user_id = response.data._id;
       Cookies.set("token", getToken);
       setToken({
         "token": getToken,
@@ -41,6 +44,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
       });
       setLoading(false);
       setVisible(false);
+      navigate(`/dashboard/${user_id}`)
     } catch (error) {
       console.log(error);
       setError(error.response.data.message || "Erreur de connexion");

@@ -2,8 +2,11 @@
 import { Link } from "react-router-dom";
 import logoVinted from "../assets/vinted.png";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({token,user,setToken,setVisible,setIsLogin,setFormDataSearch,}) => {
+
+  const navigate = useNavigate();
 
   const updateFormData = (updates) => {
     setFormDataSearch((prevState) => ({
@@ -45,6 +48,7 @@ const Header = ({token,user,setToken,setVisible,setIsLogin,setFormDataSearch,}) 
                     onClick={() => {
                       setToken(null);
                       Cookies.remove("token");
+                      navigate("/")
                     }}
                   >
                     Déconnexion
