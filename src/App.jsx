@@ -33,7 +33,7 @@ console.log(formDataSearch);
       <Routes>
         <Route path="/" element={<Home formDataSearch={formDataSearch} setFormDataSearch={setFormDataSearch} />} />
         <Route path="/offer/:id" element={<Offer />} />
-        <Route path="/dashboard/:owner_id" element={<DashBoard />} />
+        <Route path="/dashboard/:owner_id" element={<DashBoard token={token} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

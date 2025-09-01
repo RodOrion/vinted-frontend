@@ -2,12 +2,14 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AddProductForm from "../../components/forms/AddProductForm";
+import Cookies from "js-cookie";
 
 const DashBoard = () => {
     const {owner_id} = useParams()
-    const[isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState([])
     const [error, setError] = useState("")
+    const token = Cookies.get("token");
 
     useEffect( () => {
         const fetchData = async() => {
@@ -25,7 +27,7 @@ const DashBoard = () => {
         }
         fetchData()
         console.log(data);
-    },[])
+    },[owner_id])
 
   return isLoading ? <div>En cours de chargement...</div> :
   <>
@@ -50,7 +52,7 @@ const DashBoard = () => {
         </div>
     </section>
     <section id="addProducts">
-        <AddProductForm />
+        <AddProductForm token={token} />
     </section>
   </>
 }

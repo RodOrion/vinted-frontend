@@ -21,11 +21,11 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?${buildQuery(
-            formDataSearch
-          )}`
+          `https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?${buildQuery(formDataSearch)}`
         );
         setData(response.data);
+        console.log(response.data);
+        
         setIsLoading(false);
       } catch (error) {
         console.log(error.message);
@@ -67,7 +67,7 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
       </button>
       <div className="filtres">
         <div className="innerContainer">
-          <h2>FIltres</h2>
+          <h2>Filtres</h2>
           <form className="flexContainer">
             <label htmlFor="marques">
               Marques

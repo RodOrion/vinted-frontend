@@ -3,14 +3,8 @@ import { Link } from "react-router-dom";
 import logoVinted from "../assets/vinted.png";
 import Cookies from "js-cookie";
 
-const Header = ({
-  token,
-  user,
-  setToken,
-  setVisible,
-  setIsLogin,
-  setFormDataSearch,
-}) => {
+const Header = ({token,user,setToken,setVisible,setIsLogin,setFormDataSearch,}) => {
+
   const updateFormData = (updates) => {
     setFormDataSearch((prevState) => ({
       ...prevState,
@@ -35,7 +29,7 @@ const Header = ({
             <input
               type="search"
               name="title"
-              id=""
+              id="title"
               placeholder="Rechercher"
               onChange={handleChangeSearch}
             />
