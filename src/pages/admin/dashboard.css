@@ -1,0 +1,23 @@
+h1 {
+    text-align: left;
+}
+h2 {
+    flex-basis: 100%;
+}
+.headings {
+    padding: 1rem;
+    border-bottom: 1px solid;
+}
+section > .innerContainer {
+    padding: 1rem;
+    gap: 3rem;
+}
+.offer .content {
+    padding: 0 1rem;
+}
+.offer .content .flexContainer {
+    justify-content: space-between;
+}
+.offer .content .flexContainer button {
+    padding: 1rem 1.2rem;
+}

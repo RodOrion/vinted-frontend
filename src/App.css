@@ -7,6 +7,7 @@ body {
     top: 0;
     background-color: #fdfdfd;
     padding: 1rem;
+    z-index: 100;
 } 
 .hero-section > .flexContainer {
     justify-content: center;

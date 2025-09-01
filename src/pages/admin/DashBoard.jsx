@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AddProductForm from "../../components/forms/AddProductForm";
 import Cookies from "js-cookie";
+import "./dashboard.css"
 
-const DashBoard = () => {
+const DashBoard = ({user}) => {
     const {owner_id} = useParams()
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState([])
@@ -15,10 +16,15 @@ const DashBoard = () => {
     useEffect( () => {
         const fetchData = async() => {
             try {
-                const response = await axios.get(`https://site--backend-vinted--zcmn9mpggpg8.code.run/owner_offers/${owner_id}`);
+                const response = await axios.get(`https://site--backend-vinted--zcmn9mpggpg8.code.run/owner_offers/${owner_id}`, {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "multipart/form-data",
+                    }
+                });
                 setData(response.data)
                 setIsLoading(false)
-                //console.log(response);
+                setRefresh(false)
             } catch (error) {
                 console.log(error);
                 setError(error.message)
@@ -27,34 +33,50 @@ const DashBoard = () => {
         }
         fetchData()
         //console.log(data);
-        setRefresh(false)
-    },[owner_id, data, refresh])
+    },[owner_id, data, refresh, token])
+
+    // // check les infos du form ds formData
+    // useEffect(() => {
+    //     console.log(user);
+    // }, [user]);
 
   return isLoading ? <div>En cours de chargement...</div> :
   <>
-    <div className="error">{error}</div>
-    <header>
-        <div>DashBoard</div>  
-    </header>
-    <section id="products">
-        <div className="innerContainer flexContainer">
-            {data.offers.map((offer, index) => {
-            return (
-                <article key={index} className="">
-                {offer.product_name}
-                <figure>
-                    <img src={offer.product_images[0].secure_url} alt="" />
-                </figure>
-                <button className="del">Supprimer</button>
-                <button className="up">Modifier</button>
-                </article>
-            );
-            })}
+    {error && <div className="error">{error}</div>}
+    <main>
+        <div className="innerContainer headings">
+            {user.username && <p>Bonjour {user.username}</p>}
+            <h1>Welcome in your DashBoard</h1>  
         </div>
-    </section>
-    <section id="addProducts">
-        <AddProductForm token={token} setRefresh={setRefresh} />
-    </section>
+        <section id="products">
+            <div className="innerContainer flexContainer">
+                <h2>Vos offres</h2>
+                {data.offers.map((offer, index) => {
+                return (
+                    <article key={index} className="offer">
+                    
+                    <figure>
+                        <img src={offer.product_images[0].secure_url} alt="" />
+                    </figure>
+                    <div className="content">
+                        <p>{offer.product_name}</p>
+                        <div className="flexContainer">
+                            <button className="up">Modifier</button>
+                            <button className="del">Supprimer</button>
+                        </div>
+                    </div>
+                    </article>
+                );
+                })}
+            </div>
+        </section>
+        <section id="addProducts">
+            <div className="innerContainer flexContainer">
+                <h2>Ajouter une offre</h2>
+                <AddProductForm token={token} setRefresh={setRefresh} />
+            </div>
+        </section>
+    </main>
   </>
 }
 

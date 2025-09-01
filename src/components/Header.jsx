@@ -4,9 +4,10 @@ import logoVinted from "../assets/vinted.png";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
-const Header = ({token,user,setToken,setVisible,setIsLogin,setFormDataSearch,}) => {
+const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) => {
 
   const navigate = useNavigate();
+  const userID = Cookies.get("userID");
 
   const updateFormData = (updates) => {
     setFormDataSearch((prevState) => ({
@@ -39,21 +40,26 @@ const Header = ({token,user,setToken,setVisible,setIsLogin,setFormDataSearch,}) 
           </form>
           <nav>
             <ul className="flexContainer">
-              <li>About</li>
-              <li>Products</li>
               {token ? (
-                <li>
-                  <button
-                    className="alert"
-                    onClick={() => {
-                      setToken(null);
-                      Cookies.remove("token");
-                      navigate("/")
-                    }}
-                  >
-                    Déconnexion
-                  </button>
-                </li>
+                <>
+                  <li>
+                    <Link to={`/dashboard/${userID}`}>
+                      <button>Vends tes produits</button>
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      className="alert"
+                      onClick={() => {
+                        setToken(null);
+                        Cookies.remove("token");
+                        navigate("/")
+                      }}
+                    >
+                      Déconnexion
+                    </button>
+                  </li>                
+                </>
               ) : (
                 <>
                   <li>
@@ -81,7 +87,6 @@ const Header = ({token,user,setToken,setVisible,setIsLogin,setFormDataSearch,}) 
             </ul>
           </nav>
         </div>
-        {user.username && <p>Bonjour {user.username}</p>}
       </div>
       <header>
         <div className="banner"></div>

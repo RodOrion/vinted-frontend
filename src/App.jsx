@@ -13,8 +13,8 @@ import DashBoard from "./pages/admin/DashBoard";
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null)
   const [user, setUser] = useState({
-    user_Id:"",
-    username:"",
+    userID: Cookies.get('userName') || '',
+    username: Cookies.get('userName') || '',
   })
   const [visible, setVisible] = useState(false) // visibilité modale
   const [isLogin, setIsLogin] = useState(false); // card login or register
@@ -33,7 +33,7 @@ console.log(formDataSearch);
       <Routes>
         <Route path="/" element={<Home formDataSearch={formDataSearch} setFormDataSearch={setFormDataSearch} />} />
         <Route path="/offer/:id" element={<Offer />} />
-        <Route path="/dashboard/:owner_id" element={<DashBoard token={token} />} />
+        <Route path="/dashboard/:owner_id" element={<DashBoard token={token} user={user} />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

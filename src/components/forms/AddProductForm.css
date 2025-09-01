@@ -1,8 +1,6 @@
-.container {
-  max-width: 600px;
-  margin: 0 auto;
+form#productForm {
+    flex: 1;
   background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
   border-radius: 20px;
   padding: 30px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);

@@ -33,7 +33,7 @@ const Offer = () => {
     fetchData();
   }, [id]);
 
-  //console.log(data);
+  console.log(data);
 
   return isLoading ? (
     <span>En cours de chargement... </span>
@@ -55,7 +55,7 @@ const Offer = () => {
                   onSwiper={(swiper) => console.log(swiper)}
                   onSlideChange={() => console.log('slide change')}
                 >
-                    {data.product_pictures.map((img, index) => {
+                    {data.product_images.map((img, index) => {
                       return (
                         <SwiperSlide>
                             <img key={img.asset_id + index} src={img.secure_url} alt="" />

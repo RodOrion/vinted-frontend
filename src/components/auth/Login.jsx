@@ -28,16 +28,18 @@ const Login = ({ setToken, setUser, onSwitchToSignup, setVisible }) => {
       //console.log(response);
       const token = response.data.token;
       const username = response.data.account.username;
-      const user_id = response.data._id;
+      const userID = response.data._id;
       Cookies.set("token", token);
+      Cookies.set("userName", username);
+      Cookies.set("userID", userID);
       setToken(token);
       setUser({
         username,
-        user_id
+        userID
       })
       setLoading(false);
       setVisible(false);
-      navigate(`/dashboard/${user_id}`)
+      navigate(`/dashboard/${userID}`)
     } catch (error) {
       console.log(error.message);
       setError(error.message || "Erreur de connexion");

@@ -1,5 +1,7 @@
+import Dropzone from "react-dropzone";
 import axios from "axios";
-import { useState } from "react";
+import { useState, useCallback, useEffect } from "react";
+import ImageDropzone from "./imageDropzone/ImageDropzone";
 import "./AddProductForm.css";
 
 const AddProductForm = ({ token, setRefresh }) => {
@@ -14,22 +16,30 @@ const AddProductForm = ({ token, setRefresh }) => {
     brand: "",
     size: "",
     color: "",
-    pictures: "",
+    pictures: [],
   });
-  console.log(formData);
+  const [uploadedImages, setUploadedImages] = useState([]);
+
+  // check les img uploadées
+  const handleImagesChange = useCallback((images) => {
+    setUploadedImages(images);
+    setFormData((prev) => ({
+      ...prev,
+      pictures: images,
+    }));
+  }, []);
+
+  // check les infos du form ds formData
+  useEffect(() => {
+    console.log(formData);
+    console.log("Images uploadées:", uploadedImages);
+  }, [formData, uploadedImages]);
 
   const handleChange = (name, e) => {
-    if (name === "pictures") {
-      setFormData({
-        ...formData,
-        [name]: e.target.files[0], // ou e.target.files pour plusieurs fichiers
-      });
-    } else {
-      setFormData({
-        ...formData,
-        [name]: e.target.value,
-      });
-    }
+    setFormData({
+      ...formData,
+      [name]: e.target.value,
+    });
   };
 
   const HandleSubmit = async (e) => {
@@ -37,29 +47,31 @@ const AddProductForm = ({ token, setRefresh }) => {
     setIsLoading(true);
     try {
       const formDataSend = new FormData();
-        formDataSend.append("title", formData.title)
-        formDataSend.append("description", formData.description)
-        formDataSend.append("price", formData.price)
-        formDataSend.append("condition", formData.condition)
-        formDataSend.append("city", formData.city)
-        formDataSend.append("brand", formData.brand)
-        formDataSend.append("size", formData.size)
-        formDataSend.append("color", formData.color)
-        
-        // Pour les fichiers, utilisez l'objet File directement
-        if (formData.pictures) {
-            formDataSend.append("pictures", formData.pictures)
-        }
+      formDataSend.append("title", formData.title);
+      formDataSend.append("description", formData.description);
+      formDataSend.append("price", formData.price);
+      formDataSend.append("condition", formData.condition);
+      formDataSend.append("city", formData.city);
+      formDataSend.append("brand", formData.brand);
+      formDataSend.append("size", formData.size);
+      formDataSend.append("color", formData.color);
 
-    //   // pour inspecter votre formdata, vous pouvez procéder comme suit :
-    //     for (var pair of formDataSend.entries()) {
-    //       const key = pair[0];
-    //       const value = pair[1];
-    //       console.log(key + ", " + value);
-    //     }
+      if (formData.pictures && formData.pictures.length > 0) {
+        formData.pictures.forEach((file) => {
+          formDataSend.append("pictures", file); // Ajouter chaque File object
+        });
+      }
 
-      const response = axios.post(
-        "https://site--backend-vinted--zcmn9mpggpg8.code.run/offer/publish", formDataSend,
+      //   // pour inspecter votre formdata, vous pouvez procéder comme suit :
+      //     for (var pair of formDataSend.entries()) {
+      //       const key = pair[0];
+      //       const value = pair[1];
+      //       console.log(key + ", " + value);
+      //     }
+
+      const response = await axios.post(
+        "https://site--backend-vinted--zcmn9mpggpg8.code.run/offer/publish",
+        formDataSend,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -67,9 +79,23 @@ const AddProductForm = ({ token, setRefresh }) => {
           },
         }
       );
-      console.log(response);
+      console.log("response : " + response);
+      // Réinitialiser le formulaire après succès
+      setFormData({
+        title: "",
+        description: "",
+        price: "",
+        condition: "",
+        city: "",
+        brand: "",
+        size: "",
+        color: "",
+        pictures: "",
+      });
+      setUploadedImages([])
+      // Déclencher le refresh du parent
+      setRefresh((prev) => !prev); // Mieux que setRefresh(true)
       setIsLoading(false);
-      setRefresh(true);
     } catch (error) {
       console.log(error);
       setError(error.message);
@@ -82,6 +108,7 @@ const AddProductForm = ({ token, setRefresh }) => {
       <div className="form-group">
         <label htmlFor="title">Titre du produit</label>
         <input
+          value={formData.title}
           onChange={(e) => {
             handleChange("title", e);
           }}
@@ -97,6 +124,7 @@ const AddProductForm = ({ token, setRefresh }) => {
         <label htmlFor="price">Prix</label>
         <div className="price-input">
           <input
+            value={formData.price}
             onChange={(e) => {
               handleChange("price", e);
             }}
@@ -112,6 +140,7 @@ const AddProductForm = ({ token, setRefresh }) => {
       <div className="form-group">
         <label htmlFor="condition">État</label>
         <select
+          value={formData.condition}
           onChange={(e) => {
             handleChange("condition", e);
           }}
@@ -131,6 +160,7 @@ const AddProductForm = ({ token, setRefresh }) => {
       <div className="form-group">
         <label htmlFor="city">Emplacement</label>
         <input
+          value={formData.city}
           onChange={(e) => {
             handleChange("city", e);
           }}
@@ -145,6 +175,7 @@ const AddProductForm = ({ token, setRefresh }) => {
       <div className="form-group">
         <label htmlFor="brand">Marque</label>
         <input
+          value={formData.brand}
           onChange={(e) => {
             handleChange("brand", e);
           }}
@@ -159,6 +190,7 @@ const AddProductForm = ({ token, setRefresh }) => {
       <div className="form-group">
         <label htmlFor="size">Taille</label>
         <input
+          value={formData.size}
           onChange={(e) => {
             handleChange("size", e);
           }}
@@ -172,6 +204,7 @@ const AddProductForm = ({ token, setRefresh }) => {
       <div className="form-group">
         <label htmlFor="color">Couleur</label>
         <input
+          value={formData.color}
           onChange={(e) => {
             handleChange("color", e);
           }}
@@ -185,6 +218,7 @@ const AddProductForm = ({ token, setRefresh }) => {
       <div className="form-group">
         <label htmlFor="description">Description</label>
         <textarea
+          value={formData.description}
           onChange={(e) => {
             handleChange("description", e);
           }}
@@ -194,29 +228,39 @@ const AddProductForm = ({ token, setRefresh }) => {
         ></textarea>
       </div>
 
-      <div className="form-group">
-        <label>Photos (maximum 4)</label>
-        <div className="photo-upload" id="photoUpload">
-          <div className="upload-icon">📸</div>
-          <p>
-            <strong>Cliquez ici</strong> ou glissez vos photos
-          </p>
-          <p>JPG, PNG, WebP - Max 5MB par image</p>
-        </div>
-        <input
-          type="file"
-          name="pictures"
-          id="photoInput"
-          multiple={true}
-          accept="image/*"
-          onChange={(e) => {
-            handleChange("pictures", e);
+      <ImageDropzone
+
+        onImagesChange={handleImagesChange}
+        maxFiles={4}
+        maxSize={5 * 1024 * 1024}
+      />
+
+      {uploadedImages.length > 0 && (
+        <div
+          style={{
+            marginTop: "2rem",
+            padding: "1rem",
+            background: "#f3f4f6",
+            borderRadius: "8px",
           }}
-        />
-        <div className="photo-preview" id="photoPreview"></div>
-        <div className="photo-count" id="photoCount"></div>
-      </div>
-      <p>{error}</p>
+        >
+          <h3 style={{ margin: "0 0 1rem 0", color: "#374151" }}>
+            Fichiers sélectionnés:
+          </h3>
+          <ul style={{ margin: 0, paddingLeft: "1.5rem" }}>
+            {uploadedImages.map((file, index) => (
+              <li
+                key={index}
+                style={{ marginBottom: "0.5rem", color: "#6b7280" }}
+              >
+                {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {error && <p>{error}</p>}
       <button className="submit-btn" disabled={isLoading}>
         Ajouter le produit
       </button>
