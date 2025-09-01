@@ -17,7 +17,7 @@ const DashBoard = () => {
                 const response = await axios.get(`https://site--backend-vinted--zcmn9mpggpg8.code.run/owner_offers/${owner_id}`);
                 setData(response.data)
                 setIsLoading(false)
-                console.log(response);
+                //console.log(response);
                 
             } catch (error) {
                 console.log(error);
@@ -26,8 +26,8 @@ const DashBoard = () => {
             }
         }
         fetchData()
-        console.log(data);
-    },[owner_id])
+        //console.log(data);
+    },[owner_id, data])
 
   return isLoading ? <div>En cours de chargement...</div> :
   <>
