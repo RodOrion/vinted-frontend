@@ -9,6 +9,7 @@ const DashBoard = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [data, setData] = useState([])
     const [error, setError] = useState("")
+    const [refresh, setRefresh] = useState(false)
     const token = Cookies.get("token");
 
     useEffect( () => {
@@ -18,7 +19,6 @@ const DashBoard = () => {
                 setData(response.data)
                 setIsLoading(false)
                 //console.log(response);
-                
             } catch (error) {
                 console.log(error);
                 setError(error.message)
@@ -27,7 +27,8 @@ const DashBoard = () => {
         }
         fetchData()
         //console.log(data);
-    },[owner_id, data])
+        setRefresh(false)
+    },[owner_id, data, refresh])
 
   return isLoading ? <div>En cours de chargement...</div> :
   <>
@@ -52,7 +53,7 @@ const DashBoard = () => {
         </div>
     </section>
     <section id="addProducts">
-        <AddProductForm token={token} />
+        <AddProductForm token={token} setRefresh={setRefresh} />
     </section>
   </>
 }

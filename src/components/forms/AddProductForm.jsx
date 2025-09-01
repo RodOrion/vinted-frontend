@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import "./AddProductForm.css";
 
-const AddProductForm = ({ token }) => {
+const AddProductForm = ({ token, setRefresh }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
@@ -69,6 +69,7 @@ const AddProductForm = ({ token }) => {
       );
       console.log(response);
       setIsLoading(false);
+      setRefresh(true);
     } catch (error) {
       console.log(error);
       setError(error.message);
