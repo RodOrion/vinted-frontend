@@ -49,7 +49,7 @@ const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) =>
                   </li>
                   <li>
                     <button
-                      className="alert"
+                      className="alert small"
                       onClick={() => {
                         setToken(null);
                         Cookies.remove("token");
@@ -64,6 +64,7 @@ const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) =>
                 <>
                   <li>
                     <button
+                      className="small"
                       onClick={() => {
                         setVisible(true);
                         setIsLogin(false);
@@ -74,6 +75,7 @@ const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) =>
                   </li>
                   <li>
                     <button
+                      className="small"
                       onClick={() => {
                         setVisible(true);
                         setIsLogin(true);
@@ -88,7 +90,7 @@ const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) =>
           </nav>
         </div>
       </div>
-      { location.pathname !== `/dashboard/${userID}` &&
+      { location.pathname !== `/dashboard/${userID}` && location.pathname !== '/payment' &&
       <header>
         <div className="banner"></div>
       </header>

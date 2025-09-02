@@ -11,25 +11,47 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [valueRange, setValueRange] = useState([]);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    itemsPerPage: 6,
+  });
+  console.log("totalPages =>", data.count);
 
+ // 🔹 Fonction de fetch - se relance à chaque changement de page ou de recherche
   useEffect(() => {
     const fetchData = async () => {
+      setIsLoading(true);
       try {
-        const response = await axios.get(
-          `https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?${buildQuery(formDataSearch)}`
-        );
-        setData(response.data);
-        console.log(response.data);
+        console.log(`📡 Fetch page ${pagination.currentPage}`);
         
+        const response = await axios.get(
+          `https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?${buildQuery(formDataSearch)}&page=${pagination.currentPage}&limit=${pagination.itemsPerPage}`
+        );
+        
+        setData(response.data);
         setIsLoading(false);
+        
       } catch (error) {
         console.log(error.message);
         setIsLoading(false);
       }
     };
+
     fetchData();
+  }, [formDataSearch, pagination.currentPage, pagination.itemsPerPage]);
+
+  // Reset pagination quand recherche change
+  useEffect(() => {
+    setPagination((prev) => ({
+      ...prev,
+      currentPage: 1,
+      totalItems: 0,
+      totalPages: 0,
+    }));
   }, [formDataSearch]);
 
+
+  // Updates des filtres priceMax et priceMin
   useEffect(() => {
     const updateFormData = (updates) => {
       setFormDataSearch((prevState) => ({
@@ -46,6 +68,18 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
       priceMin: min,
     });
   }, [valueRange, setFormDataSearch]);
+
+  // Pagination : next() et prev()
+  const goToNext = () => {
+    setPagination((prev) => {
+      return { ...prev, currentPage: prev.currentPage + 1 };
+    });
+  };
+  const goToPrev = () => {
+    setPagination((prev) => {
+      return { ...prev, currentPage: prev.currentPage - 1 };
+    });
+  };
 
   return isLoading ? (
     <span>En cours de chargement... </span>
@@ -94,21 +128,21 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
         </div>
       </div>
 
-        <section id="products" className="flexContainer innerContainer">
-          {data.offers.map((offer) => {
-            return (
-              <Link key={offer._id} to={`/offer/${offer._id}`}>
-                <article>
-                  <figure>
-                    <img src={offer.product_images[0].secure_url} alt="" />
-                  </figure>
-                  <p>{offer.product_price} €</p>
+      <section id="products" className="flexContainer innerContainer">
+        {data.offers.map((offer) => {
+          return (
+            <Link key={offer._id} to={`/offer/${offer._id}`}>
+              <article>
+                <figure>
+                  <img src={offer.product_images[0].secure_url} alt="" />
+                </figure>
+                <p>{offer.product_price} €</p>
 
-                  <p>État : {offer.product_details[0].ÉTAT}</p>
-                  <p>Taille : {offer.product_details[3].TAILLE}</p>
-                  <p>Marque : {offer.product_details[2].MARQUE}</p>
-                  {/* <p>{offer.product_description}</p> */}
-                  {/* {offer.product_details.map((detail, index) => {
+                <p>État : {offer.product_details[0].ÉTAT}</p>
+                <p>Taille : {offer.product_details[3].TAILLE}</p>
+                <p>Marque : {offer.product_details[2].MARQUE}</p>
+                {/* <p>{offer.product_description}</p> */}
+                {/* {offer.product_details.map((detail, index) => {
                     return (
                       <div key={index}>
                         {Object.entries(detail).map(([key, value]) => {
@@ -122,12 +156,27 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
                       </div>
                     );
                   })} */}
-                </article>
-              </Link>
-            );
-          })}
-        </section>
-      
+              </article>
+            </Link>
+          );
+        })}
+      </section>
+      <div className="pagination innerContainer">
+        <button
+          className="prev small"
+          onClick={goToPrev}
+          disabled={pagination.currentPage <= 1}
+        >
+          prev
+        </button>
+        <button
+          className="next samll"
+          onClick={goToNext}
+          disabled={pagination.currentPage >= Math.ceil(data.count / pagination.itemsPerPage)}
+        >
+          next
+        </button>
+      </div>
     </main>
   );
 };

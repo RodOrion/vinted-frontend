@@ -21,11 +21,11 @@ function App() {
   const [isLogin, setIsLogin] = useState(false); // card login or register
   const [formDataSearch, setFormDataSearch] = useState({
     title: "",
-    priceMax: "",
-    priceMin: "",
-    sort: "",
+    priceMax: null,
+    priceMin: null,
+    sort: "asc",
   });
-console.log(formDataSearch);
+//console.log(formDataSearch);
 
   return (
     <Router>

@@ -6,7 +6,7 @@ import {
 import { useState } from "react";
 import axios from "axios";
 
-const CheckOutForm = () => {
+const CheckOutForm = ({options}) => {
   // Permet de faire une requête à Stripe pour confirmer le paiement
   const stripe = useStripe();
   // Permet de récupérer le contenu des inputs
@@ -34,7 +34,10 @@ const CheckOutForm = () => {
 
     // Demande au backend de créer l'intention de paiement, il nous renvoie le clientSecret
     const response = await axios.post("http://localhost:3000/payment", {
-        
+        amount: options.amount,
+        currency: options.currency,
+        description: options.appearance.description,
+        title: options.appearance.title
     });
 
     const clientSecret = response.data.client_secret;
@@ -68,8 +71,9 @@ const CheckOutForm = () => {
   }
 
 
-  return ( completed ? ( <p>Paiement effectué</p> ) : 
-    (
+  return ( completed ? ( 
+    <p className="succeed">🎉 Votre paiement a bien été effectué 🎉</p> 
+    ) : (
     <form onSubmit={handleSubmit}>
         <PaymentElement />
         <button type="submit" disabled={!stripe || !elements || isLoading}>Payer</button>
