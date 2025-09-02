@@ -17,7 +17,7 @@ body {
   max-height: 60px;
 }
 /** classes **/
-button {
+button, .btn {
     margin-top: auto;
     background-color: #09b1ba;
     border: 1px solid #09b1ba;
@@ -26,11 +26,13 @@ button {
     border-radius: 10px;
     font-size: 1.6rem;
     cursor: pointer;
+    text-align: center;
+    text-decoration: none;
 }
 button.small {
   padding: 1.2rem 2rem;
 }
-button:hover {
+button:hover, .btn:hover {
   background-color: transparent;
   color: #09b1ba;
 }
@@ -294,8 +296,5 @@ footer {
     
 }
 .innerContainer.contPayment + footer {
-    position: absolute;
-    width: 100%;
-    bottom: 0;
     margin: 4rem 0 0;
 }

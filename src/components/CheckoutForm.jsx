@@ -33,7 +33,7 @@ const CheckOutForm = ({options}) => {
     }
 
     // Demande au backend de créer l'intention de paiement, il nous renvoie le clientSecret
-    const response = await axios.post("http://localhost:3000/payment", {
+    const response = await axios.post("https://site--backend-vinted--zcmn9mpggpg8.code.run/payment", {
         amount: options.amount,
         currency: options.currency,
         description: options.appearance.description,
@@ -49,7 +49,7 @@ const CheckOutForm = ({options}) => {
       clientSecret,
       // Éventuelle redirection
       confirmParams: {
-        return_url: "http://localhost:5173/",
+        return_url: "https://site--backend-vinted--zcmn9mpggpg8.code.run//",
       },
       // Bloque la redirections
       redirect: "if_required",
