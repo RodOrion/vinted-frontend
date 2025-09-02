@@ -10,7 +10,8 @@ import { buildQuery } from "../utils/SearchOffersUtils";
 const Home = ({ setFormDataSearch, formDataSearch }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [valueRange, setValueRange] = useState([]);
+  const [valueRange, setValueRange] = useState([0, 90]);
+  const [localRange, setLocalRange] = useState([0, 90]);
   const [pagination, setPagination] = useState({
     currentPage: 1,
     itemsPerPage: 6,
@@ -53,21 +54,31 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
 
   // Updates des filtres priceMax et priceMin
   useEffect(() => {
-    const updateFormData = (updates) => {
-      setFormDataSearch((prevState) => ({
-        ...prevState,
-        ...updates,
-      }));
-    };
-    const [val1, val2] = valueRange;
-    const min = Math.min(val1, val2);
-    const max = Math.max(val1, val2);
+    // Débounce de 500ms pour éviter les appels trop fréquents
+    const timeoutId = setTimeout(() => {
+      const updateFormData = (updates) => {
+        setFormDataSearch((prevState) => ({
+          ...prevState,
+          ...updates,
+        }));
+      };
+      
+      const [val1, val2] = localRange;
+      const min = Math.min(val1, val2);
+      const max = Math.max(val1, val2);
 
-    updateFormData({
-      priceMax: max,
-      priceMin: min,
-    });
-  }, [valueRange, setFormDataSearch]);
+      console.log("🎚️ Mise à jour range:", min, "-", max);
+      updateFormData({
+        priceMax: max,
+        priceMin: min,
+      });
+      
+      setValueRange([min, max]); // Sync avec l'état principal
+    }, 500);
+
+    // Nettoyage du timeout si localRange change avant la fin
+    return () => clearTimeout(timeoutId);
+  }, [localRange, setFormDataSearch]);
 
   // Pagination : next() et prev()
   const goToNext = () => {
@@ -118,10 +129,10 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
             </label>
             <div className="contRange">
               <RangeSlider
-                value={valueRange.length > 0 ? valueRange : [0, 90]}
+                value={localRange}
                 min={0}
                 max={500}
-                onInput={setValueRange}
+                onInput={setLocalRange}
               />
             </div>
           </form>

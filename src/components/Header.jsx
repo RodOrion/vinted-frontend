@@ -44,7 +44,7 @@ const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) =>
                 <>
                   <li>
                     <Link to={`/dashboard/${userID}`}>
-                      <button>Vends tes produits</button>
+                      <button className="small">Vends tes produits</button>
                     </Link>
                   </li>
                   <li>
