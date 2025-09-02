@@ -4,9 +4,11 @@ h1 {
 h2 {
     flex-basis: 100%;
 }
+.dasheader {
+    border-bottom: 1px solid;
+}
 .headings {
     padding: 1rem;
-    border-bottom: 1px solid;
 }
 section > .innerContainer {
     padding: 1rem;

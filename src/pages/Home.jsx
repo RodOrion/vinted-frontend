@@ -10,11 +10,10 @@ import { buildQuery } from "../utils/SearchOffersUtils";
 const Home = ({ setFormDataSearch, formDataSearch }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [valueRange, setValueRange] = useState([0, 90]);
-  const [localRange, setLocalRange] = useState([0, 90]);
+  const [localRange, setLocalRange] = useState([]);
   const [pagination, setPagination] = useState({
     currentPage: 1,
-    itemsPerPage: 6,
+    itemsPerPage: 8,
   });
   console.log("totalPages =>", data.count);
 
@@ -67,13 +66,12 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
       const min = Math.min(val1, val2);
       const max = Math.max(val1, val2);
 
-      console.log("🎚️ Mise à jour range:", min, "-", max);
       updateFormData({
         priceMax: max,
         priceMin: min,
       });
       
-      setValueRange([min, max]); // Sync avec l'état principal
+      // setValueRange([min, max]); // Sync avec l'état principal
     }, 500);
 
     // Nettoyage du timeout si localRange change avant la fin
@@ -129,7 +127,7 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
             </label>
             <div className="contRange">
               <RangeSlider
-                value={localRange}
+                value={localRange.length > 0 ? localRange : [0, 90]}
                 min={0}
                 max={500}
                 onInput={setLocalRange}
@@ -152,21 +150,6 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
                 <p>État : {offer.product_details[0].ÉTAT}</p>
                 <p>Taille : {offer.product_details[3].TAILLE}</p>
                 <p>Marque : {offer.product_details[2].MARQUE}</p>
-                {/* <p>{offer.product_description}</p> */}
-                {/* {offer.product_details.map((detail, index) => {
-                    return (
-                      <div key={index}>
-                        {Object.entries(detail).map(([key, value]) => {
-                          return (
-                            <p key={key}>
-                              <span className="property">{key} : </span>
-                              <span className="value">{value}</span>
-                            </p>
-                          );
-                        })}
-                      </div>
-                    );
-                  })} */}
               </article>
             </Link>
           );
@@ -181,7 +164,7 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
           prev
         </button>
         <button
-          className="next samll"
+          className="next small"
           onClick={goToNext}
           disabled={pagination.currentPage >= Math.ceil(data.count / pagination.itemsPerPage)}
         >

@@ -121,7 +121,7 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible, setUser }) => {
         </div>
 
         <div className="form-news-group flexContainer">
-          <input type="checkbox" name="newsletter" id="newsletter" onChange={(element) => {handleInputChange(setFormData, element)}} /> <span>Inscription à la newsletter</span>
+          <input type="checkbox" name="newsletter" id="newsletter" onChange={(element) => {handleInputChange(setFormData, element)}} /> <label htmlFor="newsletter">Inscription à la newsletter</label>
         </div>
 
         <button
