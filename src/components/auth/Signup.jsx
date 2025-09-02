@@ -5,7 +5,7 @@ import "./Login.css";
 import { useNavigate } from "react-router-dom";
 import { handleInputChange, validateForm } from "../../utils/formUtils";
 
-const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
+const Signup = ({ setToken, onSwitchToLogin, setVisible, setUser }) => {
   const [formData, setFormData] = useState({
     username: "",
     email: "",
@@ -34,17 +34,20 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
         }
       );
       console.log(formData);
-      const getToken = response.data.token;
-      const user = response.data.account.username;
-      const user_id = response.data._id;
-      Cookies.set("token", getToken);
-      setToken({
-        "token": getToken,
-        "user": user
-      });
+      const token = response.data.token;
+      const username = response.data.account.username;
+      const userID = response.data._id;
+      Cookies.set("token", token);
+      Cookies.set("username", username);
+      Cookies.set("userID", userID);
+      setToken(token);
+      setUser({
+        username,
+        userID
+      })
       setLoading(false);
       setVisible(false);
-      navigate(`/dashboard/${user_id}`)
+      navigate(`/dashboard/${userID}`)
     } catch (error) {
       console.log(error);
       setError(error.response.data.message || "Erreur de connexion");
@@ -117,8 +120,8 @@ const Signup = ({ setToken, onSwitchToLogin, setVisible }) => {
           />
         </div>
 
-        <div className="form-news-group">
-          <input type="checkbox" name="newsletter" id="newsletter" onChange={(element) => {handleInputChange(setFormData, element)}} /> Inscription à la newsletter
+        <div className="form-news-group flexContainer">
+          <input type="checkbox" name="newsletter" id="newsletter" onChange={(element) => {handleInputChange(setFormData, element)}} /> <span>Inscription à la newsletter</span>
         </div>
 
         <button

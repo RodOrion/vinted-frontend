@@ -2,10 +2,10 @@
 import { Link } from "react-router-dom";
 import logoVinted from "../assets/vinted.png";
 import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) => {
-
+  const location = useLocation();
   const navigate = useNavigate();
   const userID = Cookies.get("userID");
 
@@ -88,9 +88,11 @@ const Header = ({token, setToken, setVisible, setIsLogin, setFormDataSearch}) =>
           </nav>
         </div>
       </div>
+      { location.pathname !== `/dashboard/${userID}` &&
       <header>
         <div className="banner"></div>
       </header>
+      }
     </>
   );
 };

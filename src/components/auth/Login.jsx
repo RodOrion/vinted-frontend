@@ -30,7 +30,7 @@ const Login = ({ setToken, setUser, onSwitchToSignup, setVisible }) => {
       const username = response.data.account.username;
       const userID = response.data._id;
       Cookies.set("token", token);
-      Cookies.set("userName", username);
+      Cookies.set("username", username);
       Cookies.set("userID", userID);
       setToken(token);
       setUser({

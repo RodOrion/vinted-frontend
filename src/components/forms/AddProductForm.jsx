@@ -229,7 +229,6 @@ const AddProductForm = ({ token, setRefresh }) => {
       </div>
 
       <ImageDropzone
-
         onImagesChange={handleImagesChange}
         maxFiles={4}
         maxSize={5 * 1024 * 1024}

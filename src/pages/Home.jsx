@@ -10,14 +10,9 @@ import { buildQuery } from "../utils/SearchOffersUtils";
 const Home = ({ setFormDataSearch, formDataSearch }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [originAPI, setOriginAPI] = useState(true);
   const [valueRange, setValueRange] = useState([]);
 
   useEffect(() => {
-    // const url = originAPI
-    //   ? "https://site--backend-vinted--zcmn9mpggpg8.code.run/offers?sort=price-desc"
-    //   : "https://lereacteur-vinted-api.herokuapp.com/offers";
-
     const fetchData = async () => {
       try {
         const response = await axios.get(
@@ -56,15 +51,6 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
     <span>En cours de chargement... </span>
   ) : (
     <main>
-      <button
-        className="origin"
-        onClick={() => {
-          setOriginAPI((prev) => !prev); // !originAPI
-          setIsLoading(true);
-        }}
-      >
-        {originAPI ? "NO API" : "API"}
-      </button>
       <div className="filtres">
         <div className="innerContainer">
           <h2>Filtres</h2>
@@ -107,7 +93,7 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
           </form>
         </div>
       </div>
-      {originAPI ? (
+
         <section id="products" className="flexContainer innerContainer">
           {data.offers.map((offer) => {
             return (
@@ -141,34 +127,7 @@ const Home = ({ setFormDataSearch, formDataSearch }) => {
             );
           })}
         </section>
-      ) : (
-        <section id="products" className="innerContainer flexContainer">
-          {data.offers.map((el) => {
-            return (
-              <Link key={el._id} to={`/offer/${el._id}`}>
-                <article>
-                  <p className="flexContainer contAvatar">
-                    {el.owner.account.avatar && (
-                      <img
-                        className="avatar"
-                        src={el.owner.account.avatar.secure_url}
-                        alt=""
-                      />
-                    )}
-                    <span>{el.owner.account.username}</span>
-                  </p>
-                  <figure>
-                    <img src={el.product_image.secure_url} alt="" />
-                  </figure>
-                  <p>{el.product_price} €</p>
-                  <p>{el.product_details[1].TAILLE}</p>
-                  <p>{el.product_details[0].MARQUE}</p>
-                </article>
-              </Link>
-            );
-          })}
-        </section>
-      )}
+      
     </main>
   );
 };

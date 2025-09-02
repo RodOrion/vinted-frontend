@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #09776d 0%, #0fb5a8 100%);
-  padding: 20px;
+  padding: 90px 20px 0;
   position: fixed;
   top: 0;
   width: 100%;
@@ -23,7 +23,7 @@
   background: white;
   border-radius: 16px;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  padding: 40px;
+  padding: 40px 40px 20px;
   margin: 0 auto;
 }
 /* header */
@@ -47,7 +47,7 @@
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
 }
 .form-group {
   display: flex;
@@ -80,6 +80,13 @@
 }
 .form-group input::placeholder {
   color: #999;
+}
+.form-news-group {
+    align-items: center;
+}
+input#newsletter {
+    flex: 0;
+    margin-right: 10px;
 }
 /* Bouton validation */
 .auth-button {

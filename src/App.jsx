@@ -13,8 +13,8 @@ import DashBoard from "./pages/admin/DashBoard";
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null)
   const [user, setUser] = useState({
-    userID: Cookies.get('userName') || '',
-    username: Cookies.get('userName') || '',
+    userID: Cookies.get('userID') || '',
+    username: Cookies.get('username') || '',
   })
   const [visible, setVisible] = useState(false) // visibilité modale
   const [isLogin, setIsLogin] = useState(false); // card login or register

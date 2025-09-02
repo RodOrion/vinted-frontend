@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import AddProductForm from "../../components/forms/AddProductForm";
 import Cookies from "js-cookie";
 import "./dashboard.css"
@@ -43,6 +43,7 @@ const DashBoard = ({user}) => {
   return isLoading ? <div>En cours de chargement...</div> :
   <>
     {error && <div className="error">{error}</div>}
+    {!token ? <Navigate to="/" /> : 
     <main>
         <div className="innerContainer headings">
             {user.username && <p>Bonjour {user.username}</p>}
@@ -77,6 +78,7 @@ const DashBoard = ({user}) => {
             </div>
         </section>
     </main>
+    }
   </>
 }
 

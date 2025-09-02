@@ -66,6 +66,7 @@ const Modal = ({ setVisible, visible, setToken, setUser, setIsLogin, isLogin }) 
                 onSwitchToLogin={onSwitchToLogin}
                 setVisible={setVisible}
                 setToken={setToken}
+                setUser={setUser}
               />
             )}
             <motion.button
