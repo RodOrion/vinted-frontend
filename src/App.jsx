@@ -9,6 +9,7 @@ import NotFound from "./pages/NotFound";
 import Modal from "./components/Modal";
 import Cookies from "js-cookie";
 import DashBoard from "./pages/admin/DashBoard";
+import Payment from "./pages/Payment";
 
 function App() {
   const [token, setToken] = useState(Cookies.get("token") || null)
@@ -34,6 +35,7 @@ console.log(formDataSearch);
         <Route path="/" element={<Home formDataSearch={formDataSearch} setFormDataSearch={setFormDataSearch} />} />
         <Route path="/offer/:id" element={<Offer />} />
         <Route path="/dashboard/:owner_id" element={<DashBoard token={token} user={user} />} />
+        <Route path="/payment" element={<Payment />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />

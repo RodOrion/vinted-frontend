@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 // import Swiper core and required modules
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules';
 // Import Swiper React components
@@ -100,7 +100,9 @@ const Offer = () => {
                   <span>{ data.owner.account.username }</span>
                 </div>
               </section>
-              <button>ACHETER</button>
+              <Link to="/payment" className="btn" state={{ title: data.product_name, amount: Number(data.product_price) }}>
+                ACHETER
+              </Link>
             </div>
           </article>
         )}
