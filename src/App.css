@@ -124,6 +124,7 @@ section#products {
 section#products > a {
     flex: 1 1 calc(50% - 20px);
     text-decoration: none;
+    color: #444;
 }
 section#products img.avatar {
     width: 30px;
@@ -274,6 +275,12 @@ p.succeed {
     border-radius: 10px;
 }
 /** pagination **/
+.pagination.innerContainer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 3rem;
+    margin-top: 4rem;
+}
 .pagination button[disabled] {
     cursor: auto;
     background-color: #ccc;
