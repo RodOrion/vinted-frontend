@@ -36,7 +36,14 @@ const UpdateProductForm = ({ setRefresh, offerID }) => {
           console.log(response.data);
           setFormData( prev => {
             return {...prev,
-                title : response.data.product_name
+                title : response.data.product_name,
+                price: response.data.product_price,
+                brand: response.data.product_details.find(item => item.MARQUE)?.MARQUE,
+                city: response.data.product_details.find(item => item.EMPLACEMENT)?.EMPLACEMENT,
+                condition: response.data.product_details.find(item => item.ÉTAT)?.ÉTAT,
+                size: response.data.product_details.find(item => item.TAILLE)?.TAILLE,
+                color: response.data.product_details.find(item => item.COULEUR)?.COULEUR,
+                description: response.data.product_description,
             }
           })
         } catch (error) {
